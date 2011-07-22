@@ -17,7 +17,7 @@ def auth(fn, *a, **kw):
         abort(401)
     return fn(*a, **kw)
 
-bottle.debug(True)
+#bottle.debug(True)
 app = Bottle()
 
 P = Ninfo()
