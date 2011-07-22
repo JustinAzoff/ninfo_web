@@ -42,7 +42,7 @@ def info_html(plugin, arg):
 #@auth
 @view("info.mako")
 def info():
-    arg = request.GET.get("arg")
+    arg = request.GET.get("arg",'')
     plugins = sorted(P.plugin_classes, key=lambda x:x.name)
     return {"arg": arg, "plugins": plugins}
 
