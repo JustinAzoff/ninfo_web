@@ -20,27 +20,32 @@ div.plugin_result {
 
 <h1>nInfo</h1>
 
-<form method="GET">
+<form method="GET" action="/">
 
 <fieldset>
     <legend> Information Lookup </legend>
+    <label for="arg">Query:</label>
     <input type="search" name="arg" id="arg" required autofocus value="${arg}">
+    <input type="submit" value="Lookup">
 </fieldset>
 </form>
 
 %if arg:
 
-%for p in sorted(plugins):
-<a href="#${p.name}" class="jumper", rdiv="#${p.name}" id="${p.name}_link">${p.title}</a>
+Jump to:
+%for p in plugins:
+<a href="#${p.name}" class="jumper", data-rdiv="#${p.name}" id="${p.name}_link">${p.title}</a>
 %endfor
 
-%for p in sorted(plugins):
-    <div id="${p.name}" class="plugin_result">
-        <h2> ${p.title} <a href="aboutplugin/${p.name}">(?)</a></h2>
-        <div id="${p.name}_result">
+%for p in plugins:
+    <div id="${p.name}">
+        <h2> ${p.title} <a href="aboutplugin/${p.name}" class="about_link">(?)</a></h2>
+        <div id="${p.name}_explanation"></div>
+        <div id="${p.name}_result" class="plugin_result">
             Loading...
         </div>
     </div>
+    <br>
 
 %endfor
 
@@ -71,8 +76,8 @@ $(function(){
         });
     });
 
-    $(".jumper").click(function(e){
-        var d = $(this).attr("rdiv");
+    $(".jumper").click(function(){
+        var d = $(this).data("rdiv");
         scrollTo(d);
         $(d).effect("highlight", {}, 2000);
         return false;

@@ -25,12 +25,16 @@ P = Ninfo()
 @app.route("/info/text/:plugin/:arg")
 #@auth
 def info_text(plugin, arg):
+    timeout = P.get_plugin(plugin).cache_timeout
+    response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     response.content_type = "text/plain"
     return P.get_info_text(plugin, arg)
 
 @app.route("/info/html/:plugin/:arg")
 #@auth
 def info_html(plugin, arg):
+    timeout = P.get_plugin(plugin).cache_timeout
+    response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     return P.get_info_html(plugin, arg) or 'nothing'
 
 @app.route("/")
@@ -39,17 +43,8 @@ def info_html(plugin, arg):
 @view("info.mako")
 def info():
     arg = request.GET.get("arg")
-    return {"arg": arg, "plugins": P.plugin_classes}
-"""
-    yield '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>\n'
-    yield '<form method=GET><input type=text name=arg autofocus required></form>'
-    if not arg:
-        return
-    for name in sorted(P.plugins):
-        yield "<h1>%s</h1>\n" % name
-        yield '<div id="plugin_%s">Loading...<div>\n' % name
-        yield '<script>$("#plugin_%s").load("/info/html/%s/%s")</script>\n' % (name, name, arg)
-"""
+    plugins = sorted(P.plugin_classes, key=lambda x:x.name)
+    return {"arg": arg, "plugins": plugins}
 
 @app.route("/aboutplugin/:plugin")
 @view("aboutplugin.mako")
