@@ -1,0 +1,2 @@
+recursive-include ninfo_web *.mako
+
