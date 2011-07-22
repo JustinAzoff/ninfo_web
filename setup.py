@@ -17,6 +17,7 @@ setup(name='ninfo_web',
     install_requires=[
         "bottle",
         "ninfo>=0.1.0",
+        "repoze.who",
     ],
     entry_points = {
         'console_scripts': [

@@ -23,7 +23,7 @@ app = Bottle()
 P = Ninfo()
 
 @app.route("/info/text/:plugin/:arg")
-#@auth
+@auth
 def info_text(plugin, arg):
     if plugin not in P.plugins:
         abort(404)
@@ -33,7 +33,7 @@ def info_text(plugin, arg):
     return P.get_info_text(plugin, arg)
 
 @app.route("/info/html/:plugin/:arg")
-#@auth
+@auth
 def info_html(plugin, arg):
     if plugin not in P.plugins:
         abort(404)
@@ -43,7 +43,7 @@ def info_html(plugin, arg):
 
 @app.route("/")
 @app.route("/info")
-#@auth
+@auth
 @view("info.mako")
 def info():
     arg = request.GET.get("arg",'')
@@ -57,8 +57,8 @@ def aboutplugin(plugin):
     return {"p": p}
 
 
-#import make_auth
-#app = make_auth.make_auth_app(app)
+import make_auth
+app = make_auth.make_auth_app(app)
 
 def main():
     import logging
