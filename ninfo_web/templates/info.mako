@@ -44,8 +44,8 @@ Jump to:
         <div id="${p.name}_result" class="plugin_result">
             Loading...
         </div>
+        <br>
     </div>
-    <br>
 
 %endfor
 

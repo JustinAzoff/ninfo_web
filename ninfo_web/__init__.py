@@ -35,7 +35,7 @@ def info_text(plugin, arg):
 def info_html(plugin, arg):
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
-    return P.get_info_html(plugin, arg) or 'nothing'
+    return P.get_info_html(plugin, arg)
 
 @app.route("/")
 @app.route("/info")
