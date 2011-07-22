@@ -40,7 +40,6 @@ Jump to:
 %for p in plugins:
     <div id="${p.name}">
         <h2> ${p.title} <a href="aboutplugin/${p.name}" class="about_link">(?)</a></h2>
-        <div id="${p.name}_explanation"></div>
         <div id="${p.name}_result" class="plugin_result">
             Loading...
         </div>
