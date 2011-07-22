@@ -25,6 +25,8 @@ P = Ninfo()
 @app.route("/info/text/:plugin/:arg")
 #@auth
 def info_text(plugin, arg):
+    if plugin not in P.plugins:
+        abort(404)
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     response.content_type = "text/plain"
@@ -33,6 +35,8 @@ def info_text(plugin, arg):
 @app.route("/info/html/:plugin/:arg")
 #@auth
 def info_html(plugin, arg):
+    if plugin not in P.plugins:
+        abort(404)
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     return P.get_info_html(plugin, arg)
