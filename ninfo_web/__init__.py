@@ -62,7 +62,7 @@ app = make_auth.make_auth_app(app)
 
 def main():
     import logging
-    logging.basicConfig()
+    logging.basicConfig(level=logging.DEBUG)
     run(app, server='auto', port=8000)
 
 if __name__ == "__main__":
