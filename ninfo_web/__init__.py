@@ -73,7 +73,9 @@ def info_json(plugin, arg):
 def info():
     P = get_info_object()
     arg = request.GET.get("arg",'')
-    plugins = sorted(P.plugin_classes, key=lambda x:x.name)
+    all_plugins = P.plugin_classes
+    relevant_plugins = [p for p in all_plugins if P.compatible_argument(p.name, arg)]
+    plugins = sorted(relevant_plugins, key=lambda x:x.name)
     return {"arg": arg, "plugins": plugins}
 
 @app.route("/aboutplugin/:plugin")
