@@ -5,7 +5,7 @@ from glob import glob
 
 version = '0.1.0'
 
-setup(name='ninfo_web',
+setup(name='ninfo-web',
     version=version,
     description="Simple web interface for ninfo",
     keywords='ninfo web',
