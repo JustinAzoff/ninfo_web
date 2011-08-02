@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-from bottle import Bottle, run, request, response, redirect, request, abort
+from bottle import Bottle, run, request, response, redirect, request, abort, json_dumps
 from bottle import mako_view as view
 
 from ninfo import Ninfo
@@ -17,7 +17,7 @@ def auth(fn, *a, **kw):
         abort(401)
     return fn(*a, **kw)
 
-#bottle.debug(True)
+bottle.debug(True)
 app = Bottle()
 
 import logging
@@ -86,6 +86,26 @@ def info():
         relevant_plugins = [p for p in all_plugins if P.compatible_argument(p.name, arg)]
         plugins = sorted(relevant_plugins, key=lambda x:x.name)
     return {"arg": arg, "plugins": plugins}
+
+@app.route("/multiple")
+@app.post("/multiple")
+@auth
+@view("multiple.mako")
+def multiple():
+    P = get_info_object()
+    q = request.POST.get('q','')
+    nodes = q.split()
+    enabled_plugins = []
+    if q:
+        enabled_plugins = request.POST.getall("plugins")
+    all_plugins = P.plugin_classes
+    return {"q": q,
+            "nodes": nodes,
+            "plugins": all_plugins,
+            "nodes_js": json_dumps(nodes),
+            "plugins_js": json_dumps(enabled_plugins),
+            "enabled_plugins": enabled_plugins
+            }
 
 @app.route("/aboutplugin/:plugin")
 @view("aboutplugin.mako")

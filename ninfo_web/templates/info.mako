@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<title>
-Info
-%if arg:
-- ${arg}
-%endif
-</title>
-<style type="text/css">
-div.plugin_result {
-    max-height: 400px;
-    overflow: auto;
-}
-</style>
-</head>
-
-<body>
-
-<h1>nInfo</h1>
+<%inherit file="base.mako"/>
 
 <form method="GET" action="/">
 
@@ -84,4 +64,3 @@ $(function(){
 });
 </script>
 %endif
-</body>
