@@ -35,6 +35,13 @@ def get_info_object():
     local_data.info = info
     return info
 
+@app.route("/info/plugins")
+@auth
+def info_plugins():
+    P = get_info_object()
+    plugins = dict((p.name, p.as_json()) for p in P.plugin_classes)
+    return plugins
+
 @app.route("/info/text/:plugin/:arg")
 @auth
 def info_text(plugin, arg):
@@ -64,7 +71,7 @@ def info_json(plugin, arg):
         abort(404)
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
-    return P.get_info_json(plugin, arg)
+    return P.get_info_json(plugin, arg) or 'null'
 
 @app.route("/")
 @app.route("/info")
