@@ -30,9 +30,15 @@ body {
     width: 700px;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 20px;
-    background: #f0f4f8;
     padding: 20px;
+    border-radius: 10px;
+}
+
+div.plugin_wrap {
+    background: #f0f4f8;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 10px;
 }
 
 
@@ -77,13 +83,14 @@ nInfo
 <body>
 <div id="content">
 
+<div class="plugin_wrap">
 <h1> <a href="/">nInfo</a> </h1>
 
 <ul id="nav">
 <li> <a class="button" href="/">Single address</a> </li>
 <li> <a class="button" href="/multiple">Multiple addreses</a> </li>
 </ul>
-
+</div>
 ${self.body()}
 
 </div>

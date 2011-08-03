@@ -1,5 +1,6 @@
 <%inherit file="base.mako"/>
 
+<div class="plugin_wrap">
 <form method="GET" action="/">
 
 <fieldset>
@@ -16,9 +17,10 @@ Jump to:
 %for p in plugins:
 <a href="#${p.name}" class="jumper", data-rdiv="#${p.name}" id="${p.name}_link">${p.title}</a>
 %endfor
+</div>
 
 %for p in plugins:
-    <div id="${p.name}">
+    <div id="${p.name}" class="plugin_wrap">
         <h2> ${p.title} <a href="aboutplugin/${p.name}" class="about_link">(?)</a></h2>
         <div id="${p.name}_result" class="plugin_result">
             Loading...
