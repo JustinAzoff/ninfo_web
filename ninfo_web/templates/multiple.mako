@@ -1,9 +1,8 @@
 <%inherit file="base.mako"/>
-
 %if nodes:
 %for idx,node in enumerate(nodes):
+<div class="plugin_wrap">
 <h2> ${ node } </h2>
-<div class="host">
 
 %for p in enabled_plugins:
     <h3> ${ p } </h3>
@@ -16,7 +15,7 @@
 %endfor
 %endif
 
-<p>
+<div class="plugin_wrap">
 <form method="POST">
 <b>Which plugins to run?</b> </br>
 %for p in plugins:
@@ -36,7 +35,7 @@ ${ p.title }  </br>
 <textarea name="q" rows="10" cols="80">${q}</textarea> <br>
 <input id="find" name="find" type="submit" value="find">
 </form>
-</p>
+</div>
 
 <script>
 selectonly = function(boxes)
