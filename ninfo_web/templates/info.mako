@@ -6,7 +6,7 @@
 <fieldset>
     <legend> Information Lookup </legend>
     <label for="arg">Query:</label>
-    <input type="search" name="arg" id="arg" required autofocus value="${query}" size=50>
+    <input type="search" name="arg" id="arg" required autofocus value="${query}" size=100>
     <input type="submit" value="Lookup">
 </fieldset>
 </form>
