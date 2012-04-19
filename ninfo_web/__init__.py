@@ -49,7 +49,7 @@ def info_text(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugins:
         abort(404)
-    timeout = P.get_plugin(plugin).cache_timeout
+    timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     response.content_type = "text/plain"
     options = request.GET
@@ -62,7 +62,7 @@ def info_html(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugins:
         abort(404)
-    timeout = P.get_plugin(plugin).cache_timeout
+    timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     options = request.GET
     return P.get_info_html(plugin, arg, options)
@@ -73,7 +73,7 @@ def info_json(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugins:
         abort(404)
-    timeout = P.get_plugin(plugin).cache_timeout
+    timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     options = request.GET
     return P.get_info_text(plugin, arg, options)
@@ -85,6 +85,8 @@ def info_json(plugin, arg):
 def info():
     P = get_info_object()
     query = request.GET.get("arg",'')
+    arg = ""
+    options = {}
     plugins = []
     if query:
         args, options = util.parse_query(query)
