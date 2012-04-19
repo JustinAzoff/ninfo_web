@@ -6,7 +6,7 @@
 <fieldset>
     <legend> Information Lookup </legend>
     <label for="arg">Query:</label>
-    <input type="search" name="arg" id="arg" required autofocus value="${arg}">
+    <input type="search" name="arg" id="arg" required autofocus value="${query}" size=50>
     <input type="submit" value="Lookup">
 </fieldset>
 </form>
@@ -43,7 +43,7 @@ $(function(){
     var plugins = ${[p.name for p in plugins]};
     $(plugins).each(function(i){
         var p = plugins[i];
-        $.get("/info/html/" + p + "/" + q, function(data){
+        $.get("/info/html/" + p + "/" + q, ${options}, function(data){
             if (data!=""){
                 $("#" + p + "_result").html(data);
             } else {

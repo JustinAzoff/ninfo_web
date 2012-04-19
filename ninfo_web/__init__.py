@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import os
+import cgi
 from bottle import Bottle, run, request, response, redirect, request, abort, json_dumps
 from bottle import mako_view as view
 
-from ninfo import Ninfo
+from ninfo import Ninfo, util
 
 import bottle
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -51,7 +52,9 @@ def info_text(plugin, arg):
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     response.content_type = "text/plain"
-    return P.get_info_text(plugin, arg)
+    options = request.GET
+    print options
+    return P.get_info_text(plugin, arg, options)
 
 @app.route("/info/html/:plugin/:arg")
 @auth
@@ -61,7 +64,8 @@ def info_html(plugin, arg):
         abort(404)
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
-    return P.get_info_html(plugin, arg)
+    options = request.GET
+    return P.get_info_html(plugin, arg, options)
 
 @app.route("/info/json/:plugin/:arg")
 @auth
@@ -71,7 +75,8 @@ def info_json(plugin, arg):
         abort(404)
     timeout = P.get_plugin(plugin).cache_timeout
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
-    return P.get_info_json(plugin, arg) or 'null'
+    options = request.GET
+    return P.get_info_text(plugin, arg, options)
 
 @app.route("/")
 @app.route("/info")
@@ -79,13 +84,17 @@ def info_json(plugin, arg):
 @view("info.mako")
 def info():
     P = get_info_object()
-    arg = request.GET.get("arg",'')
+    query = request.GET.get("arg",'')
     plugins = []
-    if arg:
+    if query:
+        args, options = util.parse_query(query)
+        arg = args[0]
         all_plugins = P.plugin_classes
         relevant_plugins = [p for p in all_plugins if P.compatible_argument(p.name, arg)]
         plugins = sorted(relevant_plugins, key=lambda x:x.name)
-    return {"arg": arg, "plugins": plugins}
+        options = json_dumps(options)
+        query = cgi.escape(query, quote=True)
+    return {"query": query, "arg": arg, "plugins": plugins, "options": options}
 
 @app.route("/multiple")
 @app.post("/multiple")
