@@ -27,7 +27,7 @@ body {
 }
 
 #content {
-    width: 700px;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
