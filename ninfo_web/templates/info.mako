@@ -15,7 +15,7 @@
 
 Jump to:
 %for p in plugins:
-<a href="#${p.name}" class="jumper", data-rdiv="#${p.name}" id="${p.name}_link">${p.title}</a>
+<a href="#${p.name}" class="jumper" data-rdiv="#${p.name}" id="${p.name}_link">${p.title}</a>
 %endfor
 </div>
 
