@@ -11,13 +11,6 @@ template_dir = os.path.join(os.path.dirname(__file__), "templates")
 print 'template_dir', template_dir
 bottle.TEMPLATE_PATH.insert(0, template_dir)
 
-from decorator import decorator
-@decorator
-def auth(fn, *a, **kw):
-    if request.environ.get('repoze.who.identity') == None:
-        abort(401)
-    return fn(*a, **kw)
-
 bottle.debug(True)
 app = Bottle()
 
@@ -37,14 +30,12 @@ def get_info_object():
     return info
 
 @app.route("/info/plugins")
-@auth
 def info_plugins():
     P = get_info_object()
     plugins = dict((p.name, p.as_json()) for p in P.plugin_classes)
     return plugins
 
 @app.route("/info/text/:plugin/:arg")
-@auth
 def info_text(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugins:
@@ -57,7 +48,6 @@ def info_text(plugin, arg):
     return P.get_info_text(plugin, arg, options)
 
 @app.route("/info/html/:plugin/:arg")
-@auth
 def info_html(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugins:
@@ -68,7 +58,6 @@ def info_html(plugin, arg):
     return P.get_info_html(plugin, arg, options)
 
 @app.route("/info/json/:plugin/:arg")
-@auth
 def info_json(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugins:
@@ -80,7 +69,6 @@ def info_json(plugin, arg):
 
 @app.route("/")
 @app.route("/info")
-@auth
 @view("info.mako")
 def info():
     P = get_info_object()
@@ -100,7 +88,6 @@ def info():
 
 @app.route("/multiple")
 @app.post("/multiple")
-@auth
 @view("multiple.mako")
 def multiple():
     P = get_info_object()
@@ -125,9 +112,6 @@ def aboutplugin(plugin):
     p = P.get_plugin(plugin)
     return {"p": p}
 
-
-import make_auth
-app = make_auth.make_auth_app(app)
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
