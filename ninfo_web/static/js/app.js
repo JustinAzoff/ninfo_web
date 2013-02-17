@@ -76,6 +76,12 @@ function Multiple($scope, $routeParams, $http) {
         $http({method:'GET', url: '/extract', params: data}).success(function(data){
             $scope.args = data.args;
             console.log($scope.args);
+            $scope.status.total=0;
+            $.each($scope.plugins, function(i, p){
+                if(p.checked){
+                    $scope.status.total++;
+                }
+            });
             $scope.status.total *= data.args.length;
         });
     };
