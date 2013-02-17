@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 import os
 import cgi
-from bottle import Bottle, run, request, response, redirect, request, abort, json_dumps
+from bottle import Bottle, run, request, response, redirect, request, abort, json_dumps, static_file
 from bottle import mako_view as view
 
 from ninfo import Ninfo, util
 
 import bottle
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
+static_dir   = os.path.join(os.path.dirname(__file__), "static")
 print 'template_dir', template_dir
 bottle.TEMPLATE_PATH.insert(0, template_dir)
 
@@ -28,6 +29,11 @@ def get_info_object():
     log.debug("Creating new info object for %s" % threading.currentThread())
     local_data.info = info
     return info
+
+
+@app.route('/static/<path:path>')
+def callback(path):
+    return static_file(path, root=static_dir)
 
 @app.route("/info/plugins")
 def info_plugins():
@@ -112,6 +118,13 @@ def aboutplugin(plugin):
     p = P.get_plugin(plugin)
     return {"p": p}
 
+@app.route("/extract")
+def extract():
+    q = request.GET.get("q", "")
+    print "q=", q
+    #FIXME: use ip+mac finder code
+    args = q.split()
+    return {"args": args}
 
 def main():
     logging.basicConfig(level=logging.DEBUG)

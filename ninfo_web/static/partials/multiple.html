@@ -1,0 +1,24 @@
+<h1>Multiple Search</h1>
+
+<div ng-repeat="a in args">
+    <h2>{{a}}</h2>
+    <div ng-repeat="p in plugins">
+        <div ng-show="p.checked">
+            <result arg="a" plugin="p">
+            </result>
+        </div>
+    </div>
+</div>
+<form ng-submit="lookup()">
+
+<fieldset>
+  <legend>Select plugins</legend>
+  <label class="checkbox" ng-repeat="p in plugins">
+    <input type="checkbox" ng-model="p.checked"></input>
+    {{p.name}} - {{p.title}}
+  </label>
+
+  <textarea rows="8" class="span6" ng-model="q"></textarea> <br>
+  <button type="submit" class="btn btn-primary">Lookup</button>
+</fieldset>
+</form>

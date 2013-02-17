@@ -1,23 +1,16 @@
 <%inherit file="base.mako"/>
 
-<div class="plugin_wrap">
-<form method="GET" action="/">
-
-<fieldset>
-    <legend> Information Lookup </legend>
-    <label for="arg">Query:</label>
-    <input type="search" name="arg" id="arg" required autofocus value="${query}" size=100>
-    <input type="submit" value="Lookup">
-</fieldset>
+<h1>Single Search</h1>
+<form class="form-search">
+  <input type="text" class="input-medium search-query" name="arg" required autofocus>
+  <button type="submit" class="btn btn-primary">Lookup</button>
 </form>
-
 %if arg:
 
 Jump to:
 %for p in plugins:
 <a href="#${p.name}" class="jumper" data-rdiv="#${p.name}" id="${p.name}_link">${p.title}</a>
 %endfor
-</div>
 
 %for p in plugins:
     <div id="${p.name}" class="plugin_wrap">

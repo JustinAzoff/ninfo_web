@@ -1,0 +1,11 @@
+<h1>Single Search</h1>
+<form class="form-search" ng-submit="lookup()">
+  <input type="text" class="input-medium search-query" ng-model="arg" required autofocus>
+  <button type="submit" class="btn btn-primary">Lookup</button>
+</form>
+
+<div ng-repeat="p in plugins">
+    <result arg="arg" plugin="p">
+    </result>
+</div>
+</ul>

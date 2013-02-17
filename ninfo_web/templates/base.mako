@@ -1,98 +1,70 @@
 <!DOCTYPE html>
-<html>
-<head>
-<style type="text/css">
-h1 a{
-    text-decoration: none;
-}
-legend {
-    color: #2C4762;
-    font-weight: bold;
-    border: 1px solid #2C4762;
-}
-input {
-    border: 2px solid #2C4762;
-    padding: 2px;
-}
-input:focus {
-    border: 2px solid green;
-}
-input[type=submit]:hover {
-    background: #2C4762;
-    color: #f0f4f8;
-}
+<html lang="en" ng-app="ninfo">
+  <head>
+    <meta charset="utf-8">
+    <title>
+    nInfo
+    %if arg:
+    - ${arg}
+    %endif
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-body {
-    background: #2C4762;
-}
+    <!-- Le styles -->
+    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      div.plugin_result {
+          max-height: 400px;
+          overflow: auto;
+      }
+    </style>
+    <link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
-#content {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
-    border-radius: 10px;
-}
+    <!-- Fav and touch icons
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/static/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="/static/bootstrap/ico/favicon.png">
+    -->
+  </head>
 
-div.plugin_wrap {
-    background: #f0f4f8;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 10px;
-}
+  <body>
 
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">nInfo</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#/single">Single</a></li>
+              <li><a href="#/multiple">Multiple</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
 
-h1, h2, h3 {
-    color: #2C4762;
-}
-div.plugin_result {
-    max-height: 400px;
-    overflow: auto;
-}
-ul#nav li {
-    list-style-type: none;
-    display: inline;
-}
-.button {
-    padding: 5px 10px;
-    display: inline;
-    background: #2C4762;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    text-decoration: none;
-}
-.button:hover {
-    background: #fff;
-    color: #2C4762;
-}
+    <div class="container">
+        <div ng-view>
+    </div> <!-- /container -->
 
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<title>
-nInfo
-%if arg:
-- ${arg}
-%endif
-</title>
-</head>
-<body>
-<div id="content">
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+    <script src="/static/js/app.js"></script>
 
-<div class="plugin_wrap">
-<h1> <a href="/">nInfo</a> </h1>
-
-<ul id="nav">
-<li> <a class="button" href="/">Single address</a> </li>
-<li> <a class="button" href="/multiple">Multiple addreses</a> </li>
-</ul>
-</div>
-${self.body()}
-
-</div>
-</body>
+  </body>
 </html>
