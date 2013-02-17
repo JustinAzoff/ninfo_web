@@ -5,16 +5,6 @@
   <div class="bar bar-warning" ng-style="bar_empty()"></div>
   <div class="bar bar-danger" ng-style="bar_error()"></div>
 </div>
-
-<div ng-repeat="a in args">
-    <h2>{{a}}</h2>
-    <div ng-repeat="p in plugins">
-        <div ng-show="p.checked">
-            <result arg="a" plugin="p">
-            </result>
-        </div>
-    </div>
-</div>
 <form ng-submit="lookup()">
 
 <fieldset>
@@ -29,3 +19,11 @@
 
 </fieldset>
 </form>
+
+<div ng-repeat="a in args">
+    <h2>{{a}}</h2>
+    <div ng-repeat="p in plugins | filter:{checked:true}">
+        <result arg="a" plugin="p">
+        </result>
+    </div>
+</div>

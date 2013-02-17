@@ -18,32 +18,44 @@ function SingleArg($scope, $routeParams, $http, $location) {
     $scope.lookup = function(){
         $location.url('/single/' + $scope.arg)
     };
-    $scope.status = {
-        started:false,
-        total:0,
-        running:0,
-        success:0,
-        error:0,
-        empty:0
+    $scope.reset = function () {
+        $scope.status = {
+            started:false,
+            running:0,
+            success:0,
+            error:0,
+            empty:0
+        };
     };
+    $scope.reset();
     $http.get("/info/plugins").success(function(data){
-        $.each(data, function(i,p){
+        $scope.plugins = data.plugins;
+        $.each(data.plugins, function(i,p){
             p.checked=true;
-            $scope.status.total++;
         });
-        $scope.plugins = data;
     });
+    $scope.active_plugins = function () {
+        var plugins = [];
+        angular.forEach($scope.plugins, function(plugin, key){
+            if(plugin.checked)
+                plugins.push(plugin)
+        });
+        return plugins;
+    };
+    $scope.total = function () {
+        return $scope.active_plugins.length;
+    }
 
     $scope.bar_success = function() {
-        var pct = 100 * ($scope.status.success / $scope.status.total);
+        var pct = 100 * ($scope.status.success / $scope.total());
         return {"width": pct + "%"};
     };
     $scope.bar_empty = function() {
-        var pct = 100 * ($scope.status.empty / $scope.status.total);
+        var pct = 100 * ($scope.status.empty / $scope.total());
         return {"width": pct + "%"};
     };
     $scope.bar_error = function() {
-        var pct = 100 * ($scope.status.error / $scope.status.total);
+        var pct = 100 * ($scope.status.error / $scope.total());
         return {"width": pct + "%"};
     };
 
@@ -56,22 +68,26 @@ function SingleArg($scope, $routeParams, $http, $location) {
 
 }
 function Multiple($scope, $routeParams, $http) {
-    $scope.status = {
-        started:false,
-        total:0,
-        running:0,
-        success:0,
-        error:0,
-        empty:0
+    $scope.reset = function () {
+        $scope.status = {
+            started:false,
+            running:0,
+            success:0,
+            error:0,
+            empty:0
+        };
+        $scope.args=[];
     };
+    $scope.reset();
     $http.get("/info/plugins").success(function(data){
-        $.each(data, function(i,p){
+        $scope.plugins = data.plugins
+        $.each(data.plugins, function(i,p){
             p.checked=true;
             $scope.status.total++;
         });
-        $scope.plugins = data;
     });
     $scope.lookup = function(){
+        $scope.reset();
         var data = {q: $scope.q};
         $http({method:'GET', url: '/extract', params: data}).success(function(data){
             $scope.args = data.args;
@@ -91,16 +107,28 @@ function Multiple($scope, $routeParams, $http) {
             p.checked = !p.checked;
         });
     };
+    $scope.active_plugins = function () {
+        var plugins = [];
+        angular.forEach($scope.plugins, function(plugin, key){
+            if(plugin.checked)
+                plugins.push(plugin)
+        });
+        return plugins;
+    };
+    $scope.total = function () {
+        return $scope.args.length * $scope.active_plugins().length;
+    }
+    
     $scope.bar_success = function() {
-        var pct = 100 * ($scope.status.success / $scope.status.total);
+        var pct = 100 * ($scope.status.success / $scope.total());
         return {"width": pct + "%"};
     };
     $scope.bar_empty = function() {
-        var pct = 100 * ($scope.status.empty / $scope.status.total);
+        var pct = 100 * ($scope.status.empty / $scope.total());
         return {"width": pct + "%"};
     };
     $scope.bar_error = function() {
-        var pct = 100 * ($scope.status.error / $scope.status.total);
+        var pct = 100 * ($scope.status.error / $scope.total());
         return {"width": pct + "%"};
     };
 }
@@ -110,10 +138,6 @@ app.directive('result', function($http) {
     restrict: 'E',
     scope: {arg: '=arg', plugin: '=plugin'},
     link: function($scope, $element, $attrs){
-        if(!$scope.plugin.checked) {
-            $scope.result=""
-            return;
-        }
         $scope.result="Loading...";
         $scope.plugin.running=true;
         $scope.$parent.status.started=true;
@@ -142,4 +166,3 @@ app.directive('result', function($http) {
     '</div>'
     };
 });
-

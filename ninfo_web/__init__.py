@@ -38,8 +38,8 @@ def callback(path):
 @app.route("/info/plugins")
 def info_plugins():
     P = get_info_object()
-    plugins = dict((p.name, p.as_json()) for p in P.plugin_classes)
-    return plugins
+    plugins = [p.as_json() for p in P.plugin_classes]
+    return {"plugins": plugins}
 
 @app.route("/info/text/:plugin/:arg")
 def info_text(plugin, arg):

@@ -11,12 +11,12 @@
 </div>
 
 <ul class="nav nav-pills">
-  <li ng-repeat="p in plugins">
+  <li ng-repeat="p in plugins | filter:{checked:true}">
     <a ng-show="p.result" ng-click="scroll_to(p.name)">{{p.name}}</a>
   </li>
 </ul>
 
-<div ng-repeat="p in plugins">
+<div ng-repeat="p in plugins | filter:{checked:true}">
     <result arg="arg" plugin="p">
     </result>
 </div>
