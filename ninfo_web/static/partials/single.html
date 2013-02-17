@@ -8,6 +8,11 @@
   <div class="bar" ng-style="bar_style()"></div>
 </div>
 
+<ul class="nav nav-pills">
+  <li ng-repeat="p in plugins">
+    <a ng-show="p.result" ng-click="scroll_to(p.name)">{{p.name}}</a>
+  </li>
+</ul>
 
 <div ng-repeat="p in plugins">
     <result arg="arg" plugin="p">

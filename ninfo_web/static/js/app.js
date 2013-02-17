@@ -38,6 +38,13 @@ function SingleArg($scope, $routeParams, $http, $location) {
         return {"width": $scope.percent() + "%"};
     };
 
+    $scope.scroll_to = function(plugin) {
+        var selector = "#result_" + plugin;
+        var targetOffset = $(selector).offset().top;
+        $('html,body').animate({scrollTop: targetOffset-55}, 500);
+    };
+
+
 }
 function Multiple($scope, $routeParams, $http) {
     $http.get("/info/plugins").success(function(data){
@@ -76,9 +83,10 @@ app.directive('result', function($http) {
         });
     },
     template:
-    '<div ng-show="result">' +
+    '<div ng-show="result" id="result_{{plugin.name}}">' +
     '<h2>{{plugin.name}} - {{plugin.title}} </h2>' +
     '<div ng-bind-html-unsafe="result"></div>' +
+    '<hr>' +
     '</div>'
     };
 });
