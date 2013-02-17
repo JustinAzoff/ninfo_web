@@ -131,6 +131,7 @@ app.directive('result', function($http) {
         }).error(function (){
             $scope.$parent.status.running--;
             $scope.$parent.status.error++;
+            $scope.result="";
         });
     },
     template:
