@@ -43,7 +43,7 @@ function SingleArg($scope, $routeParams, $http, $location) {
         return plugins;
     };
     $scope.total = function () {
-        return $scope.active_plugins.length;
+        return $scope.active_plugins().length;
     }
 
     $scope.bar_success = function() {
