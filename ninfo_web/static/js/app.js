@@ -19,9 +19,12 @@ function SingleArg($scope, $routeParams, $http, $location) {
         $location.url('/single/' + $scope.arg)
     };
     $scope.status = {
+        started:false,
         total:0,
         running:0,
-        finished:0
+        success:0,
+        error:0,
+        empty:0
     };
     $http.get("/info/plugins").success(function(data){
         $.each(data, function(i,p){
@@ -31,11 +34,17 @@ function SingleArg($scope, $routeParams, $http, $location) {
         $scope.plugins = data;
     });
 
-    $scope.percent = function() {
-        return 100 * ($scope.status.finished / $scope.status.total);
+    $scope.bar_success = function() {
+        var pct = 100 * ($scope.status.success / $scope.status.total);
+        return {"width": pct + "%"};
     };
-    $scope.bar_style = function() {
-        return {"width": $scope.percent() + "%"};
+    $scope.bar_empty = function() {
+        var pct = 100 * ($scope.status.empty / $scope.status.total);
+        return {"width": pct + "%"};
+    };
+    $scope.bar_error = function() {
+        var pct = 100 * ($scope.status.error / $scope.status.total);
+        return {"width": pct + "%"};
     };
 
     $scope.scroll_to = function(plugin) {
@@ -47,9 +56,18 @@ function SingleArg($scope, $routeParams, $http, $location) {
 
 }
 function Multiple($scope, $routeParams, $http) {
+    $scope.status = {
+        started:false,
+        total:0,
+        running:0,
+        success:0,
+        error:0,
+        empty:0
+    };
     $http.get("/info/plugins").success(function(data){
         $.each(data, function(i,p){
             p.checked=true;
+            $scope.status.total++;
         });
         $scope.plugins = data;
     });
@@ -58,7 +76,26 @@ function Multiple($scope, $routeParams, $http) {
         $http({method:'GET', url: '/extract', params: data}).success(function(data){
             $scope.args = data.args;
             console.log($scope.args);
+            $scope.status.total *= data.args.length;
         });
+    };
+
+    $scope.toggle_all = function () {
+        $.each($scope.plugins, function(i, p){
+            p.checked = !p.checked;
+        });
+    };
+    $scope.bar_success = function() {
+        var pct = 100 * ($scope.status.success / $scope.status.total);
+        return {"width": pct + "%"};
+    };
+    $scope.bar_empty = function() {
+        var pct = 100 * ($scope.status.empty / $scope.status.total);
+        return {"width": pct + "%"};
+    };
+    $scope.bar_error = function() {
+        var pct = 100 * ($scope.status.error / $scope.status.total);
+        return {"width": pct + "%"};
     };
 }
 
@@ -73,13 +110,21 @@ app.directive('result', function($http) {
         }
         $scope.result="Loading...";
         $scope.plugin.running=true;
+        $scope.$parent.status.started=true;
         $scope.$parent.status.running++;
         $http.get("/info/html/" + $scope.plugin.name + "/" + $scope.arg).success(function(data){
             $scope.plugin.result=data;
             $scope.result=data;
             $scope.plugin.running=false;
             $scope.$parent.status.running--;
-            $scope.$parent.status.finished++;
+            if(data) {
+                $scope.$parent.status.success++;
+            } else {
+                $scope.$parent.status.empty++;
+            }
+        }).error(function (){
+            $scope.$parent.status.running--;
+            $scope.$parent.status.error++;
         });
     },
     template:

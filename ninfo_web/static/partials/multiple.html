@@ -1,5 +1,11 @@
 <h1>Multiple Search</h1>
 
+<div class="progress" ng-show="status.success">
+  <div class="bar bar-success" ng-style="bar_success()"></div>
+  <div class="bar bar-warning" ng-style="bar_empty()"></div>
+  <div class="bar bar-danger" ng-style="bar_error()"></div>
+</div>
+
 <div ng-repeat="a in args">
     <h2>{{a}}</h2>
     <div ng-repeat="p in plugins">
@@ -13,12 +19,13 @@
 
 <fieldset>
   <legend>Select plugins</legend>
+  <textarea rows="8" class="span6" ng-model="q"></textarea> <br>
+  <button type="submit" class="btn btn-primary">Lookup</button> <br>
+  <a ng-click="toggle_all()" >toggle all</a> <br>
   <label class="checkbox" ng-repeat="p in plugins">
     <input type="checkbox" ng-model="p.checked"></input>
     {{p.name}} - {{p.title}}
   </label>
 
-  <textarea rows="8" class="span6" ng-model="q"></textarea> <br>
-  <button type="submit" class="btn btn-primary">Lookup</button>
 </fieldset>
 </form>

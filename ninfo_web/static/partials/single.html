@@ -1,11 +1,13 @@
 <h1>Single Search</h1>
 <form class="form-search" ng-submit="lookup()">
-  <input type="text" class="input-medium search-query" ng-model="arg" required autofocus>
+  <input type="search" class="input-medium search-query" ng-model="arg" required autofocus>
   <button type="submit" class="btn btn-primary">Lookup</button>
 </form>
 
-<div class="progress progress-info progress-striped">
-  <div class="bar" ng-style="bar_style()"></div>
+<div class="progress progress-striped active" ng-show="status.success">
+  <div class="bar bar-success" ng-style="bar_success()"></div>
+  <div class="bar bar-warning" ng-style="bar_empty()"></div>
+  <div class="bar bar-danger" ng-style="bar_error()"></div>
 </div>
 
 <ul class="nav nav-pills">
