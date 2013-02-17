@@ -4,6 +4,11 @@
   <button type="submit" class="btn btn-primary">Lookup</button>
 </form>
 
+<div class="progress progress-info progress-striped">
+  <div class="bar" ng-style="bar_style()"></div>
+</div>
+
+
 <div ng-repeat="p in plugins">
     <result arg="arg" plugin="p">
     </result>

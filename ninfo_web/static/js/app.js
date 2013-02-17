@@ -18,12 +18,26 @@ function SingleArg($scope, $routeParams, $http, $location) {
     $scope.lookup = function(){
         $location.url('/single/' + $scope.arg)
     };
+    $scope.status = {
+        total:0,
+        running:0,
+        finished:0
+    };
     $http.get("/info/plugins").success(function(data){
         $.each(data, function(i,p){
             p.checked=true;
+            $scope.status.total++;
         });
         $scope.plugins = data;
     });
+
+    $scope.percent = function() {
+        return 100 * ($scope.status.finished / $scope.status.total);
+    };
+    $scope.bar_style = function() {
+        return {"width": $scope.percent() + "%"};
+    };
+
 }
 function Multiple($scope, $routeParams, $http) {
     $http.get("/info/plugins").success(function(data){
@@ -46,14 +60,19 @@ app.directive('result', function($http) {
     restrict: 'E',
     scope: {arg: '=arg', plugin: '=plugin'},
     link: function($scope, $element, $attrs){
-        console.log($scope.plugin.name, $scope.arg, $scope.plugin.checked);
         if(!$scope.plugin.checked) {
             $scope.result=""
             return;
         }
         $scope.result="Loading...";
+        $scope.plugin.running=true;
+        $scope.$parent.status.running++;
         $http.get("/info/html/" + $scope.plugin.name + "/" + $scope.arg).success(function(data){
+            $scope.plugin.result=data;
             $scope.result=data;
+            $scope.plugin.running=false;
+            $scope.$parent.status.running--;
+            $scope.$parent.status.finished++;
         });
     },
     template:
