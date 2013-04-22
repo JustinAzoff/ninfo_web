@@ -1,2 +1,3 @@
 recursive-include ninfo_web *.mako
-
+recursive-include ninfo_web/static *
+recursive-include ninfo_web/templates *
