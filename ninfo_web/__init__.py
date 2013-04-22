@@ -71,7 +71,7 @@ def info_json(plugin, arg):
     timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     options = request.GET
-    return P.get_info_text(plugin, arg, options)
+    return P.get_info_json(plugin, arg, options)
 
 @app.route("/")
 @app.route("/info")
