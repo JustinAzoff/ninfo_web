@@ -3,7 +3,7 @@ import sys, os
 from glob import glob
 
 
-version = '0.2.1'
+version = '0.3.0'
 
 setup(name='ninfo-web',
     version=version,
@@ -16,7 +16,7 @@ setup(name='ninfo-web',
     zip_safe=False,
     install_requires=[
         "bottle",
-        "ninfo>=0.1.5",
+        "ninfo>=0.2.0",
     ],
     entry_points = {
         'console_scripts': [

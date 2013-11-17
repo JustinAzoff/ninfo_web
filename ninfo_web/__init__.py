@@ -38,13 +38,13 @@ def callback(path):
 @app.route("/info/plugins")
 def info_plugins():
     P = get_info_object()
-    plugins = [p.as_json() for p in P.plugin_classes]
+    plugins = [p.as_json() for p in P.plugins]
     return {"plugins": plugins}
 
 @app.route("/info/text/:plugin/:arg")
 def info_text(plugin, arg):
     P = get_info_object()
-    if plugin not in P.plugins:
+    if plugin not in P.plugin_modules:
         abort(404)
     timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
@@ -56,7 +56,7 @@ def info_text(plugin, arg):
 @app.route("/info/html/:plugin/:arg")
 def info_html(plugin, arg):
     P = get_info_object()
-    if plugin not in P.plugins:
+    if plugin not in P.plugin_modules:
         abort(404)
     timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
@@ -66,7 +66,7 @@ def info_html(plugin, arg):
 @app.route("/info/json/:plugin/:arg")
 def info_json(plugin, arg):
     P = get_info_object()
-    if plugin not in P.plugins:
+    if plugin not in P.plugin_modules:
         abort(404)
     timeout = P.get_plugin(plugin).cache_timeout or 60
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
@@ -85,7 +85,7 @@ def info():
     if query:
         args, options = util.parse_query(query)
         arg = args[0]
-        all_plugins = P.plugin_classes
+        all_plugins = P.plugins
         relevant_plugins = [p for p in all_plugins if P.compatible_argument(p.name, arg)]
         plugins = sorted(relevant_plugins, key=lambda x:x.name)
         options = json_dumps(options)
@@ -102,7 +102,7 @@ def multiple():
     enabled_plugins = []
     if q:
         enabled_plugins = request.POST.getall("plugins")
-    all_plugins = P.plugin_classes
+    all_plugins = P.plugins
     return {"q": q,
             "nodes": nodes,
             "plugins": all_plugins,
