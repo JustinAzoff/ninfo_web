@@ -41,7 +41,7 @@ def info_plugins():
     plugins = [p.as_json() for p in P.plugins]
     return {"plugins": plugins}
 
-@app.route("/info/text/:plugin/:arg")
+@app.route("/info/text/:plugin/<arg:path>")
 def info_text(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugin_modules:
@@ -50,10 +50,10 @@ def info_text(plugin, arg):
     response.headers['Cache-Control'] = 'max-age=%d' %  timeout
     response.content_type = "text/plain"
     options = request.GET
-    print options
+    print "%r %r" % (plugin, arg)
     return P.get_info_text(plugin, arg, options)
 
-@app.route("/info/html/:plugin/:arg")
+@app.route("/info/html/:plugin/<arg:path>")
 def info_html(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugin_modules:
@@ -63,7 +63,7 @@ def info_html(plugin, arg):
     options = request.GET
     return P.get_info_html(plugin, arg, options)
 
-@app.route("/info/json/:plugin/:arg")
+@app.route("/info/json/:plugin/<arg:path>")
 def info_json(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugin_modules:

@@ -1,8 +1,8 @@
-var app = angular.module('ninfo', []).
+var app = angular.module('ninfo', ['ngRoute']).
     config(['$routeProvider', function($routeProvider) {
     $routeProvider.
     when('/single',         {templateUrl: '/static/partials/single.html', controller: Single}).
-    when('/single/:arg',    {templateUrl: '/static/partials/single.html', controller: SingleArg}).
+    when('/single/:arg*',   {templateUrl: '/static/partials/single.html', controller: SingleArg}).
     when('/multiple',       {templateUrl: '/static/partials/multiple.html', controller: Multiple}).
     otherwise({redirectTo: '/single'});
     }]);
@@ -133,18 +133,19 @@ function Multiple($scope, $routeParams, $http) {
     };
 }
 
-app.directive('result', function($http) {
+app.directive('result', function($http, $sce) {
     return {
     restrict: 'E',
     scope: {arg: '=arg', plugin: '=plugin'},
     link: function($scope, $element, $attrs){
-        $scope.result="Loading...";
+        $scope.result=$sce.trustAsHtml("Loading...");
         $scope.plugin.running=true;
         $scope.$parent.status.started=true;
         $scope.$parent.status.running++;
         $http.get("/info/html/" + $scope.plugin.name + "/" + $scope.arg).success(function(data){
-            $scope.plugin.result=data;
-            $scope.result=data;
+            html = $sce.trustAsHtml(data);
+            $scope.plugin.result=html;
+            $scope.result=html;
             $scope.plugin.running=false;
             $scope.$parent.status.running--;
             if(data) {
@@ -155,13 +156,13 @@ app.directive('result', function($http) {
         }).error(function (){
             $scope.$parent.status.running--;
             $scope.$parent.status.error++;
-            $scope.result="";
+            $scope.result=$sce.trustAsHtml("");
         });
     },
     template:
     '<div ng-show="result" id="result_{{plugin.name}}">' +
     '<h2>{{plugin.name}} - {{plugin.title}} </h2>' +
-    '<div ng-bind-html-unsafe="result"></div>' +
+    '<div ng-bind-html="result"></div>' +
     '<hr>' +
     '</div>'
     };
