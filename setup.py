@@ -3,7 +3,7 @@ import sys, os
 from glob import glob
 
 
-version = '0.3.0'
+version = '0.3.1'
 
 setup(name='ninfo-web',
     version=version,
