@@ -127,8 +127,13 @@ def extract():
     return {"args": args}
 
 def main():
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option("-p", "--port", dest="port", action="store", type="int", help="The port to listen on ",default=8000)
+    (options, args) = parser.parse_args()
+
     logging.basicConfig(level=logging.DEBUG)
-    run(app, server='auto', port=8000)
+    run(app, server='auto', port=options.port)
 
 if __name__ == "__main__":
     main()
