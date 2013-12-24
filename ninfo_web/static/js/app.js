@@ -167,3 +167,9 @@ app.directive('result', function($http, $sce) {
     '</div>'
     };
 });
+
+$( document ).on( "click", "span.arg", function() {
+  var arg = $(this).text().replace(" ", "");
+  window.location = "/#/single/" + arg;
+});
+
