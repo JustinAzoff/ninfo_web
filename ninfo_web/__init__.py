@@ -41,7 +41,7 @@ def info_plugins():
     plugins = [p.as_json() for p in P.plugins]
     return {"plugins": plugins}
 
-@app.route("/info/text/:plugin/<arg:path>")
+@app.route("/info/txt/:plugin/<arg:path>")
 def info_text(plugin, arg):
     P = get_info_object()
     if plugin not in P.plugin_modules:
