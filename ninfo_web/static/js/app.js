@@ -168,7 +168,7 @@ app.directive('result', function($http, $sce) {
     };
 });
 
-$( document ).on( "click", "span.arg", function() {
+$( document ).on( "click", ".arg", function() {
   var arg = $(this).text().replace(" ", "");
   window.location = "/#/single/" + arg;
 });

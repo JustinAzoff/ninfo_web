@@ -22,6 +22,13 @@
           max-height: 400px;
           overflow: auto;
       }
+      .arg {
+        cursor: pointer;
+        color: #0088cc;
+      }
+      .arg:hover {
+        text-decoration: underline;
+      }
     </style>
     <link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
